@@ -14,6 +14,9 @@ flask-mail = "*"
 flask-pymongo = "*"
 dnspython = "*"
 python-dotenv = "*"
+flask-script = "*"
+flask-migrate = "*"
+flask-sqlalchemy = "*"
 
 [requires]
 python_version = "3.7"

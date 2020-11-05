@@ -18,7 +18,7 @@ ENV = 'development'
 
  # JWT configuration
 JWT_SECRET_KEY = 'secret'
-JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=1)
+JWT_ACCESS_TOKEN_EXPIRES = timedelta(days=30)
 
 # Files configuration
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
