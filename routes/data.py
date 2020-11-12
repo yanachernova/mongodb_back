@@ -36,10 +36,9 @@ def createData():
 @route_datas.route('/data/<id>', methods=['DELETE'])
 @jwt_required
 def deleteData(id=None):
-    test=[]
     for doc in table.find():
         if doc['user_id'] == id:
             table.delete_one({'_id': ObjectId(doc['_id'])})
-    return jsonify(test),200
+    return jsonify({'success': 'Deleted!'}),200
 
 

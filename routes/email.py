@@ -14,11 +14,10 @@ table = db.email
 table_data = db.data
 table_user = db.user
 
-def sendemail(to_email, subject):
+def sendemail(to_email, subject, name):
     title = '..::GoDrunk MESSAGE::..'
-    name = "Yana"
     from_email = os.getenv('MAIL_USERNAME')
-    sendMail(title, name, from_email, to_email, subject)
+    sendMail(title, name, from_email, to_email, f'<div><p>Your friend {name} said: </p>{subject}</p><p>Cheers!!!</p></div>')
 
 route_emails = Blueprint('route_emails', __name__)
 @route_emails.route('/emails', methods=['GET'])
@@ -47,16 +46,13 @@ def createEmail():
 @route_emails.route('/email/<id>', methods=['DELETE'])
 @jwt_required
 def deleteEmail(id=None):
-    test=[]
     for doc in table.find():
         if doc['user_id'] == id:
             table.delete_one({'_id': ObjectId(doc['_id'])})
-    return jsonify(test),200
+    return jsonify({'success': 'Deleted!'}),200
 
 @route_emails.route('/sendemail/<user_id>', methods=['POST'])
-#@jwt_required
 def sendEmail(user_id=None):
-    subject_user=''
     emails = []
     for doc in table.find():
         if doc['user_id'] == user_id:
@@ -66,8 +62,13 @@ def sendEmail(user_id=None):
     for doc_data in table_data.find():
         if doc_data['user_id'] == user_id:
             subjects.append(doc_data['subject'])
-    
-    sendemail(emails, subjects[0])
+            
+
+    user = table_user.find_one({'_id': ObjectId(user_id)})
+    print(emails)
+    print(subjects[0])
+    print(user['name'])
+    sendemail(emails, subjects[0], user['name'])
             
     return jsonify({'success': 'sended'}),200
 
